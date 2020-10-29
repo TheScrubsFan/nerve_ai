@@ -14,7 +14,6 @@ module.exports = {
       rejected() {},
       received(data) {
         console.log(data)
-        console.log('newnew')
       },
       disconnected() {}
     }

@@ -6,11 +6,16 @@
 </template>
 
 <script>
-module.exports = {
+import axios from 'axios';
+
+export default {
   methods: {
     createGame: function () {
-      console.log(this.$router)
-      this.$router.push({name: 'game'})
+      axios
+        .post('/games')
+        .then(response => (
+          this.$router.push({name: 'game', params: { id: response.data.game.id }})
+        ))
     }
   }
 }

@@ -4,6 +4,7 @@ import App from '../app.vue'
 import Router from 'vue-router'
 import Vuelidate from 'vuelidate'
 import ActionCableVue from 'actioncable-vue'
+import axios from 'axios'
 
 import NewGame from '../components/game/new.vue'
 import Game from '../components/game/game.vue'
@@ -13,7 +14,6 @@ Vue.use(Router)
 Vue.use(ActionCableVue, {
   debug: true,
   debugLevel: 'error',
-  //connectionUrl: 'ws://localhost:3001/cable',
   connectionUrl: process.env.WEBSOCKET_HOST,
   connectImmediately: true,
 })
@@ -26,12 +26,16 @@ const router = new Router({
       component: NewGame
     },
     {
-      path:'/game/1/',
+      path:'/game/:id',
       name:'game',
       component: Game
     },
   ]
 })
+
+let token = document.getElementsByName('csrf-token')[0].getAttribute('content')
+axios.defaults.headers.common['X-CSRF-Token'] = token
+axios.defaults.headers.common['Accept'] = 'application/json'
 
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({

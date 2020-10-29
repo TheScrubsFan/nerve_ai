@@ -10,7 +10,48 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_28_061720) do
+ActiveRecord::Schema.define(version: 2020_10_29_125156) do
+
+  create_table "cells", force: :cascade do |t|
+    t.integer "game_id", null: false
+    t.integer "x"
+    t.integer "y"
+    t.string "type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id"], name: "index_cells_on_game_id"
+  end
+
+  create_table "gamers", force: :cascade do |t|
+    t.integer "game_id", null: false
+    t.integer "user_id", null: false
+    t.string "type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["game_id"], name: "index_gamers_on_game_id"
+    t.index ["user_id"], name: "index_gamers_on_user_id"
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "winner_id"
+    t.string "state"
+    t.integer "dimension"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_games_on_user_id"
+  end
+
+  create_table "steps", force: :cascade do |t|
+    t.integer "game_id", null: false
+    t.integer "gamer_id", null: false
+    t.integer "cell_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cell_id"], name: "index_steps_on_cell_id"
+    t.index ["game_id"], name: "index_steps_on_game_id"
+    t.index ["gamer_id"], name: "index_steps_on_gamer_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -24,4 +65,11 @@ ActiveRecord::Schema.define(version: 2020_10_28_061720) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "cells", "games"
+  add_foreign_key "gamers", "games"
+  add_foreign_key "gamers", "users"
+  add_foreign_key "games", "users"
+  add_foreign_key "steps", "cells"
+  add_foreign_key "steps", "gamers"
+  add_foreign_key "steps", "games"
 end

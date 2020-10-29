@@ -7,5 +7,5 @@ Rails.application.routes.draw do
 
   get 'app', to: 'games#new'
 
-  resources :games, only: :new
+  resources :games, only: [:new, :create]
 end
