@@ -27,8 +27,9 @@ class GamesController < ApplicationController
 
   def show
     game = Game.find params[:id]
+    gamers = game.gamers
 
-    if !current_user.in?(game.gamers.map(&:user)) && game.gamers.size < 2
+    if !(current_user.in?(gamers.map(&:user))) && gamers.size < 2
       game.gamers.create(user: current_user)
       game.reload
       ActionCable.server.broadcast 'game', game: GameSerializer.render_as_hash(game)
@@ -106,7 +107,7 @@ class GamesController < ApplicationController
   def vertical(game)
     board = vertical_board game
 
-    winner = game.gamers.detect do |gamer|
+    winner = game.gamers.where.not(kind: nil).detect do |gamer|
       type = gamer.kind.to_s
 
       win = board.map do |row|

@@ -2,7 +2,7 @@
 table {
   border: 1px black solid;
 }
-button {
+.cell {
   width: 30px;
   height: 30px;
 }
@@ -37,7 +37,7 @@ button {
       <tr v-for="row in game.cells">
         <td v-for="cell in row">
           <div v-if="canStep(cell)">
-            <button v-on:click="makeStep(cell)" v-if="!cell.kind">
+            <button class="cell" v-on:click="makeStep(cell)" v-if="!cell.kind">
             </button>
           </div>
 
@@ -78,7 +78,6 @@ export default {
     axios
       .get('/users/current')
       .then(response => (
-        console.log(response),
         this.user = response.data.user
       ))
   },
