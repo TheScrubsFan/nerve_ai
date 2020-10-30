@@ -47,9 +47,6 @@ button {
         </td>
       </tr>
     </table>
-    <pre>
-      {{game}}
-    </pre>
  </div>
 </template>
 
@@ -72,7 +69,18 @@ export default {
   mounted() {
     this.$cable.subscribe({
       channel: 'GamesChannel'
-    });
+    })
+    axios
+      .get('/games/'+ this.$route.params.id)
+      .then(response => (
+        this.game = response.data
+      ))
+    axios
+      .get('/users/current')
+      .then(response => (
+        console.log(response),
+        this.user = response.data.user
+      ))
   },
   data: function () {
     return {
@@ -107,25 +115,6 @@ export default {
       return this.game.winner && this.game.winner.user.id == this.user.id
     }
   },
-  computed: {
-    loadGame: function () {
-      console.log('loadgame')
-      axios
-        .get('/games/'+ this.$route.params.id)
-        .then(response => (
-          this.game = response.data
-        ))
-    },
-    loadCurrentUser: function () {
-      axios
-        .get('/users/current')
-        .then(response => (
-          console.log(response),
-          this.user = response.data.user
-        ))
-
-    }
-  }
 }
 </script>
 
