@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
     render: h => h(App),
     router
-  }).$mount(document.getElementById('app'))
+  }).$mount()
 
   document.body.appendChild(app.$el)
 
