@@ -24,11 +24,13 @@ button {
       </span>
     </div>
 
-    <div v-if="youWinner()">
-      Вы выиграли
-    </div>
-    <div v-if="!youWinner()">
-      Вы проиграли
+    <div v-if="game.state == 'finished'">
+      <div v-if="youWinner()">
+        Вы выиграли
+      </div>
+      <div v-if="!youWinner()">
+        Вы проиграли
+      </div>
     </div>
 
     <table v-if="game.gamers && game.gamers.length == 2">
@@ -45,11 +47,14 @@ button {
         </td>
       </tr>
     </table>
+    <pre>
+      {{game}}
+    </pre>
  </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
 export default {
   channels: {
@@ -115,6 +120,7 @@ export default {
       axios
         .get('/users/current')
         .then(response => (
+          console.log(response),
           this.user = response.data.user
         ))
 

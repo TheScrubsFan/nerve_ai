@@ -1,12 +1,20 @@
+<style>
+button {
+  width: 50px;
+  height: 50px;
+}
+</style>
+
 <template>
   <div class="">
-    todo: new game button
-    <button v-on:click="createGame()">NewGame</button>
+    <button v-on:click="createGame()">
+      NewGame
+    </button>
  </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
 export default {
   methods: {

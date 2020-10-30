@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     render: h => h(App),
     el: '#app',
     router
-  }).$mount()
+  })
 
   document.body.appendChild(app.$el)
 

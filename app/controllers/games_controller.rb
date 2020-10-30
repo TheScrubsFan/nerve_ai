@@ -30,6 +30,7 @@ class GamesController < ApplicationController
 
     if !current_user.in?(game.gamers.map(&:user)) && game.gamers.size < 2
       game.gamers.create(user: current_user)
+      game.reload
       ActionCable.server.broadcast 'game', game: GameSerializer.render_as_hash(game)
     end
 
