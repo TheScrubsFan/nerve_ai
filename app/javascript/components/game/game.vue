@@ -1,5 +1,5 @@
 <style>
-table {
+.field {
   border: 1px black solid;
 }
 .cell {
@@ -33,7 +33,7 @@ table {
       </div>
     </div>
 
-    <table v-if="game.gamers && game.gamers.length == 2">
+    <table class="field" v-if="game.gamers && game.gamers.length == 2">
       <tr v-for="row in game.cells">
         <td v-for="cell in row">
           <div v-if="canStep(cell)">

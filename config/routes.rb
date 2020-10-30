@@ -5,13 +5,12 @@ Rails.application.routes.draw do
 
   root to: 'games#new'
 
-  #get 'app', to: 'games#new'
-
   resources :users  do
     collection do
       get :current
     end
   end
+
   resources :games, only: [:new, :create, :show] do
     member do
       post :make_step
