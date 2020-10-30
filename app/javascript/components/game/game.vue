@@ -10,15 +10,25 @@ button {
 
 <template>
   <div class="">
-    <span v-if="game.gamers && game.gamers.length < 2">
+    <div v-if="game.gamers && game.gamers.length < 2">
       Чтобы начать игру - отправьте ссылку другому игроку
-    </span>
+    </div>
+
+    <div v-if="game.gamers && game.gamers.length == 2">
+      <span v-if="canStep()">
+        Ваш ход
+      </span>
+
+      <span v-if="!canStep()">
+        Ход соперника
+      </span>
+    </div>
 
     <table v-if="game.gamers && game.gamers.length == 2">
       <tr v-for="row in game.cells">
         <td v-for="cell in row">
-          <div v-if="game.state == 'started'">
-            <button v-on:click="makeStep(cell)" v-if="canStep(cell)">
+          <div v-if="canStep(cell)">
+            <button v-on:click="makeStep(cell)" v-if="!cell.kind">
             </button>
           </div>
 
@@ -73,12 +83,17 @@ export default {
     },
 
     canStep: function (cell) {
-      !cell.kind && this.game.current_gamer.user_id == this.user.id
-    }
+      return !cell.kind && this.canStep()
+    },
+
+    canStep: function () {
+      return this.game.state == 'started' &&
+        this.game.current_gamer.user_id == this.user.id
+    },
+
   },
   computed: {
     loadGame: function () {
-      console.warn('load')
       axios
         .get('/games/'+ this.$route.params.id)
         .then(response => (

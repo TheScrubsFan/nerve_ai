@@ -14,7 +14,7 @@ class Game < ApplicationRecord
   end
 
   def current_gamer
-    return user if steps.blank?
+    return gamers.find_by(user_id: user.id) if steps.blank?
 
     last_gamer = steps.order('created_at ASC').last.gamer
 

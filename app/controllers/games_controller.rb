@@ -20,7 +20,11 @@ class GamesController < ApplicationController
 
   def show
     game = Game.find params[:id]
-    game.gamers.create(user: current_user) if !current_user.in?(game.gamers) && game.gamers.size < 2
+
+    if !current_user.in?(game.gamers.map(&:user)) && game.gamers.size < 2
+      game.gamers.create(user: current_user)
+      ActionCable.server.broadcast 'game', game: GameSerializer.render_as_hash(game)
+    end
 
     render json: GameSerializer.render_as_hash(game)
   end
@@ -31,13 +35,13 @@ class GamesController < ApplicationController
     cell = Cell.find(params[:cell][:id])
 
     kind = game.steps.any? ? :o : :x
-    gamer.update(kind: kind)
+    gamer.update(kind: kind) unless gamer.kind
 
     game.steps.create(
       cell_id: cell.id,
       gamer_id: gamer.id
     )
-    cell.update(kind: :x)
+    cell.update(kind: gamer.kind)
 
     ActionCable.server.broadcast 'game', game: GameSerializer.render_as_hash(game)
   end
