@@ -3,5 +3,5 @@ class Cell < ApplicationRecord
 
   belongs_to :game
 
-  enumerize :type, in: [:x, :o]
+  enumerize :kind, in: [:x, :o]
 end

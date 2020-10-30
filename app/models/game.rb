@@ -5,6 +5,7 @@ class Game < ApplicationRecord
   belongs_to :winner, class_name: 'User', optional: true
 
   has_many :cells
+  has_many :steps
   has_many :gamers
 
   aasm column: :state do

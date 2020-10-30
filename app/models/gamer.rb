@@ -4,5 +4,5 @@ class Gamer < ApplicationRecord
   belongs_to :game
   belongs_to :user
 
-  enumerize :type, in: [:x, :o]
+  enumerize :kind, in: [:x, :o]
 end

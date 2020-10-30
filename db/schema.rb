@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_29_125156) do
+ActiveRecord::Schema.define(version: 2020_10_30_033946) do
 
   create_table "cells", force: :cascade do |t|
     t.integer "game_id", null: false
     t.integer "x"
     t.integer "y"
-    t.string "type"
+    t.string "kind"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["game_id"], name: "index_cells_on_game_id"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 2020_10_29_125156) do
   create_table "gamers", force: :cascade do |t|
     t.integer "game_id", null: false
     t.integer "user_id", null: false
-    t.string "type"
+    t.string "kind"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["game_id"], name: "index_gamers_on_game_id"

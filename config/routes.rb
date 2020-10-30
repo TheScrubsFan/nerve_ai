@@ -7,5 +7,9 @@ Rails.application.routes.draw do
 
   get 'app', to: 'games#new'
 
-  resources :games, only: [:new, :create]
+  resources :games, only: [:new, :create, :show] do
+    member do
+      post :make_step
+    end
+  end
 end
