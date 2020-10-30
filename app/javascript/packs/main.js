@@ -40,6 +40,7 @@ axios.defaults.headers.common['Accept'] = 'application/json'
 document.addEventListener('DOMContentLoaded', () => {
   const app = new Vue({
     render: h => h(App),
+    el: '#app',
     router
   }).$mount()
 
