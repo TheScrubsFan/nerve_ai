@@ -12,4 +12,12 @@ class Game < ApplicationRecord
     state :started, initial: true
     state :finished
   end
+
+  def current_gamer
+    return user if steps.blank?
+
+    last_gamer = steps.order('created_at ASC').last.gamer
+
+    gamers.where.not(id: last_gamer.id).first
+  end
 end

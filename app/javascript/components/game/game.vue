@@ -7,14 +7,24 @@ button {
   height: 30px;
 }
 </style>
+
 <template>
   <div class="">
-    <table>
+    <span v-if="game.gamers && game.gamers.length < 2">
+      Чтобы начать игру - отправьте ссылку другому игроку
+    </span>
+
+    <table v-if="game.gamers && game.gamers.length == 2">
       <tr v-for="row in game.cells">
         <td v-for="cell in row">
-          <button v-on:click="makeStep(cell)">
+          <div v-if="game.state == 'started'">
+            <button v-on:click="makeStep(cell)" v-if="canStep(cell)">
+            </button>
+          </div>
+
+          <span v-if="cell.kind">
             {{ cell.kind }}
-          </button>
+          </span>
         </td>
       </tr>
     </table>
@@ -32,7 +42,6 @@ export default {
       },
       rejected() {},
       received(data) {
-        console.log(data),
         this.game = data.game
       },
       disconnected() {}
@@ -45,27 +54,44 @@ export default {
   },
   data: function () {
     return {
-      game: {}
+      game: {},
+      user: {}
     }
   },
   methods: {
     makeStep: function (cell) {
-      console.log(cell)
+      if(!this.canStep(cell))
+        return
+
       let params = {
         cell: cell
       }
       let url = '/games/' + this.$route.params.id + '/make_step'
+
       axios
         .post(url, params)
+    },
+
+    canStep: function (cell) {
+      !cell.kind && this.game.current_gamer.user_id == this.user.id
     }
   },
   computed: {
     loadGame: function () {
+      console.warn('load')
       axios
         .get('/games/'+ this.$route.params.id)
         .then(response => (
           this.game = response.data
         ))
+    },
+    loadCurrentUser: function () {
+      axios
+        .get('/users/current')
+        .then(response => (
+          this.user = response.data.user
+        ))
+
     }
   }
 }

@@ -20,7 +20,7 @@ class GamesController < ApplicationController
 
   def show
     game = Game.find params[:id]
-    game.gamers.create(user: current_user) unless current_user.in?(game.gamers)
+    game.gamers.create(user: current_user) if !current_user.in?(game.gamers) && game.gamers.size < 2
 
     render json: GameSerializer.render_as_hash(game)
   end

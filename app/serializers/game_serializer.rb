@@ -4,6 +4,7 @@ class GameSerializer < Blueprinter::Base
   fields :state, :dimension
 
   association :user, blueprint: UserSerializer
+  association :steps, blueprint: StepSerializer
   association :winner, blueprint: UserSerializer
   association :gamers, blueprint: GamerSerializer
 
@@ -15,4 +16,6 @@ class GameSerializer < Blueprinter::Base
       .sort_by{ |v| v.first.y }
       .each{ |v| v.sort_by!(&:x) }
   end
+
+  field :current_gamer, blueprint: GamerSerializer
 end
