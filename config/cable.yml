@@ -8,5 +8,5 @@ test:
 
 production:
   adapter: redis
-  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
-  channel_prefix: nerve_ai_production
+  url: 'redis://redistogo:910a6135bb0c37e205b566ca57e5624b@dory.redistogo.com:10668/'
+  #channel_prefix: nerve_ai_production

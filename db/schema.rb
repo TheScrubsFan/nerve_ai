@@ -12,8 +12,11 @@
 
 ActiveRecord::Schema.define(version: 2020_10_30_033946) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "cells", force: :cascade do |t|
-    t.integer "game_id", null: false
+    t.bigint "game_id", null: false
     t.integer "x"
     t.integer "y"
     t.string "kind"
@@ -23,8 +26,8 @@ ActiveRecord::Schema.define(version: 2020_10_30_033946) do
   end
 
   create_table "gamers", force: :cascade do |t|
-    t.integer "game_id", null: false
-    t.integer "user_id", null: false
+    t.bigint "game_id", null: false
+    t.bigint "user_id", null: false
     t.string "kind"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -33,7 +36,7 @@ ActiveRecord::Schema.define(version: 2020_10_30_033946) do
   end
 
   create_table "games", force: :cascade do |t|
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.integer "winner_id"
     t.string "state"
     t.integer "dimension"
@@ -43,9 +46,9 @@ ActiveRecord::Schema.define(version: 2020_10_30_033946) do
   end
 
   create_table "steps", force: :cascade do |t|
-    t.integer "game_id", null: false
-    t.integer "gamer_id", null: false
-    t.integer "cell_id", null: false
+    t.bigint "game_id", null: false
+    t.bigint "gamer_id", null: false
+    t.bigint "cell_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["cell_id"], name: "index_steps_on_cell_id"

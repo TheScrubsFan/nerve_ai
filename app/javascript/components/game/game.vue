@@ -99,7 +99,7 @@ export default {
     },
 
     youWinner: function () {
-      return this.game.winner.user.id == this.user.id
+      return this.game.winner && this.game.winner.user.id == this.user.id
     }
   },
   computed: {
