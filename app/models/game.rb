@@ -2,7 +2,7 @@ class Game < ApplicationRecord
   include AASM
 
   belongs_to :user
-  belongs_to :winner, class_name: 'User', optional: true
+  belongs_to :winner, class_name: 'Gamer', optional: true
 
   has_many :cells
   has_many :steps

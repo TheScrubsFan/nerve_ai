@@ -10,7 +10,7 @@ button {
 
 <template>
   <div class="">
-    <div v-if="game.gamers && game.gamers.length < 2">
+    <div v-if="!game.gamers || game.gamers && game.gamers.length < 2">
       Чтобы начать игру - отправьте ссылку другому игроку
     </div>
 
@@ -22,6 +22,13 @@ button {
       <span v-if="!canStep()">
         Ход соперника
       </span>
+    </div>
+
+    <div v-if="youWinner()">
+      Вы выиграли
+    </div>
+    <div v-if="!youWinner()">
+      Вы проиграли
     </div>
 
     <table v-if="game.gamers && game.gamers.length == 2">
@@ -91,6 +98,9 @@ export default {
         this.game.current_gamer.user_id == this.user.id
     },
 
+    youWinner: function () {
+      return this.game.winner.user.id == this.user.id
+    }
   },
   computed: {
     loadGame: function () {

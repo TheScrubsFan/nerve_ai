@@ -5,7 +5,7 @@ class GameSerializer < Blueprinter::Base
 
   association :user, blueprint: UserSerializer
   association :steps, blueprint: StepSerializer
-  association :winner, blueprint: UserSerializer
+  association :winner, blueprint: GamerSerializer
   association :gamers, blueprint: GamerSerializer
 
   field :cells do |game|

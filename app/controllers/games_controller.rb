@@ -9,11 +9,18 @@ class GamesController < ApplicationController
       dimension: 10
     )
 
-    (1..game.dimension).each do |y|
-      (1..game.dimension).each do |x|
-        game.cells.create(x: x, y: y)
+    dimension_params = [].tap do |array|
+      (1..game.dimension).each do |y|
+        (1..game.dimension).each do |x|
+          array << {
+            x: x,
+            y: y
+          }
+        end
       end
     end
+
+    game.cells.create(dimension_params)
 
     render json: { game: game }
   end
@@ -43,6 +50,75 @@ class GamesController < ApplicationController
     )
     cell.update(kind: gamer.kind)
 
+    winner = check(game)
+    game.update(state: :finished, winner: winner) if winner
+
     ActionCable.server.broadcast 'game', game: GameSerializer.render_as_hash(game)
+  end
+
+  private
+
+  def check(game)
+    h = horizontal(game)
+    return h if h
+    v = vertical(game)
+    return v if v
+
+  end
+
+  def horizontal_board(game)
+    [].tap do |array|
+      (1..game.dimension).each do |y|
+        array << game.cells.where(y: y).order('x ASC').map{|c| c.kind? ? c.kind : 'n'}.join('')
+      end
+    end
+  end
+
+  def vertical_board(game)
+    [].tap do |array|
+      (1..game.dimension).each do |x|
+        array << game.cells.where(x: x).order('y ASC').map{|c| c.kind? ? c.kind : 'n'}.join('')
+      end
+    end
+  end
+
+  def horizontal(game)
+    board = horizontal_board game
+
+    winner = game.gamers.where.not(kind: nil).detect do |gamer|
+      type = gamer.kind.to_s
+
+      win = board.map do |row|
+        gamer if row.match(/#{type}{5}/).present?
+      end
+
+      win.any?
+    end
+
+    if winner
+      return winner
+    else
+      return nil
+    end
+  end
+
+  def vertical(game)
+    board = vertical_board game
+
+    winner = game.gamers.detect do |gamer|
+      type = gamer.kind.to_s
+
+      win = board.map do |row|
+        gamer if row.match(/#{type}{5}/).present?
+      end
+
+      win.any?
+    end
+
+    if winner
+      return winner
+    else
+      return nil
+    end
   end
 end
