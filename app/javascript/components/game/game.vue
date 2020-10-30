@@ -104,6 +104,7 @@ export default {
   },
   computed: {
     loadGame: function () {
+      console.log('loadgame')
       axios
         .get('/games/'+ this.$route.params.id)
         .then(response => (
