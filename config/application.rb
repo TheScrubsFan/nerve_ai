@@ -10,6 +10,8 @@ module NerveAi
   class Application < Rails::Application
     config.load_defaults 6.0
 
+    config.i18n.default_locale = :ru
+
     config.to_prepare do
       Devise::SessionsController.layout "devise"
       Devise::RegistrationsController.layout "devise"
