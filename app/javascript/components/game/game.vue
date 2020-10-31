@@ -118,7 +118,8 @@ export default {
   },
   mounted() {
     this.$cable.subscribe({
-      channel: 'GamesChannel'
+      channel: 'GamesChannel',
+      room: 'Game_' + this.$route.params.id
     })
     axios
       .get('/games/'+ this.$route.params.id)

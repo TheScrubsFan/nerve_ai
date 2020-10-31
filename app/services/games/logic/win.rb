@@ -16,14 +16,8 @@ module Games
       end
 
       def perform
-        %i[horizontal vertical].each do |type|
-          winner = winner_in_line type
-
-          return winner if winner
-        end
-
-        %i[left right].each do |type|
-          winner = winner_in_diagonal type
+        %i[line diagonal].each do |side|
+          winner = send "winner_in_#{side}"
 
           return winner if winner
         end
@@ -33,44 +27,43 @@ module Games
 
       private
 
-      def winner_in_line(board_type)
-        board = send board_type
-
+      def winner_in_line
         gamers.detect do |gamer|
           kind = gamer.kind.to_s
-          win = board.map do |row|
-            gamer if row.match(/#{kind}{5}/).present?
-          end
 
-          win.any?
+          %i[horizontal vertical].map do |direction|
+            line(direction).map do |row|
+              gamer if row.match(/#{kind}{5}/).present?
+            end
+          end.flatten.any?
         end
       end
 
-      def horizontal
+      def line(direction)
         [].tap do |array|
           (1..game.dimension).each do |y|
-            array << cells.where(y: y).order('x ASC').map{|c| c.kind? ? c.kind : 'n'}.join('')
+            stack = if direction == :horizontal
+              cells.where(y: y).order('x ASC')
+            else
+              cells.where(x: y).order('y ASC')
+            end
+
+            array << stack.map{|c| c.kind? ? c.kind : 'n'}.join('')
           end
         end
       end
 
-      def vertical
-        [].tap do |array|
-          (1..game.dimension).each do |x|
-            array << cells.where(x: x).order('y ASC').map{|c| c.kind? ? c.kind : 'n'}.join('')
-          end
-        end
-      end
-
-      def winner_in_diagonal(direction)
+      def winner_in_diagonal
         gamers.detect do |gamer|
           kind = gamer.kind.to_s
 
-          send(direction, kind)
+          %i[left right].map do |direction|
+            diagonal direction, kind
+          end.any?
         end
       end
 
-      def left(kind)
+      def diagonal(direction, kind)
         kind_cells = cells.where(kind: kind)
 
         kind_cells.each do |cell|
@@ -82,8 +75,10 @@ module Games
           end
 
           complete = (0..4).map do |inc|
+            x = direction == :left ? (cell.x + inc) : (cell.x - inc)
+
             {
-              x: (cell.x + inc),
+              x: x,
               y: (cell.y + inc)
             }
           end
@@ -92,48 +87,6 @@ module Games
         end
 
         false
-      end
-
-      def right(kind)
-        kind_cells = cells.where(kind: kind)
-
-        kind_cells.each do |cell|
-          cells_map = kind_cells.map do |cell|
-            {
-              x: cell.x,
-              y: cell.y
-            }
-          end
-
-          complete = (0..4).map do |inc|
-            {
-              x: (cell.x - inc),
-              y: (cell.y + inc)
-            }
-          end
-
-          return true if (complete & cells_map).size >= 5
-        end
-
-        false
-      end
-
-      def array_increments?(array)
-        return false unless array.size < 5
-
-        sorted = array.sort_by(&:x)
-        last_cell = sorted.first
-
-        sorted[1, sorted.count].each do |cell|
-          if last_cell.x + 1 != cell.x &&
-              last_cell.y + 1 != cell.y
-            return false
-          end
-
-          last_cell = cell
-        end
-
-        true
       end
     end
   end

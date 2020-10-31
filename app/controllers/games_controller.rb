@@ -33,7 +33,7 @@ class GamesController < ApplicationController
       game.gamers.create(user: current_user)
       game.reload
 
-      ActionCable.server.broadcast 'game', game: GameSerializer.render_as_hash(game)
+      broadcast game
     end
 
     render json: GameSerializer.render_as_hash(game)
@@ -56,6 +56,12 @@ class GamesController < ApplicationController
     winner = Games::Logic::Win.perform game
     game.update(state: :finished, winner: winner) if winner
 
-    ActionCable.server.broadcast 'game', game: GameSerializer.render_as_hash(game)
+    broadcast game
+  end
+
+  private
+
+  def broadcast(game)
+    ActionCable.server.broadcast "Game_#{game.id}", game: GameSerializer.render_as_hash(game)
   end
 end
