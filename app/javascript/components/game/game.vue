@@ -73,7 +73,12 @@ table tr th:last-child {
         Вы выиграли
       </div>
       <div v-if="!youWinner()">
-        Вы проиграли
+        <div v-if="game.winner">
+          Вы проиграли
+        </div>
+        <div v-if="!game.winner">
+          Ничья. Ходы кончились
+        </div>
       </div>
       <div>
         <a v-on:click="createGame()">Новая игра</a>

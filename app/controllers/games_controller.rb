@@ -56,6 +56,12 @@ class GamesController < ApplicationController
     winner = Games::Logic::Win.perform game
     game.update(state: :finished, winner: winner) if winner
 
+    if game.state == 'started' && game.cells.where.not(kind: nil).count > 75
+      draw = Games::Logic::Draw.perform(game)
+
+      game.update(state: :finished) if draw
+    end
+
     broadcast game
   end
 
