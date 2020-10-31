@@ -1,24 +1,33 @@
-# README
+# Крестики-нолики
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Description
 
-Things you may want to cover:
+Игра в крестики-нолики на доске 10/10 онлайн. Приложение хранит историю ходов (для будущего отображения). В данных заложена возможность в будущем масштабировать доску под необходимый размер. Первые 2 человека перешедшие по ссылке становятся игроками - следующие наблюдателями.
 
-* Ruby version
+Стек: 
+- авторизация - devise;
+- фронтэнд - vue;
+- игра рассчитывает только алгоритм победы (ничья в разработке);
+- игра использует websockets - нет необходимости перезагружать страницу;
+- для начала игры - перешлите ссылку другу, либо передайте id игры;
 
-* System dependencies
+## Running
 
-* Configuration
+Go to Heroku.
 
-* Database creation
+[https://xoxotsf.herokuapp.com/](https://xoxotsf.herokuapp.com/)
 
-* Database initialization
 
-* How to run the test suite
+## Built With
 
-* Services (job queues, cache servers, search engines, etc.)
+* Ruby - 2.7.1
+* Rails - 6.0.3.4
+* Vue - 2.6.12
+* Node - 10.13.0
 
-* Deployment instructions
+## Authors
 
-* ...
+* **Baidin Maxim** - *Creator* - [the_scrubs_fan](https://github.com/TheScrubsFan)
+
+
+
