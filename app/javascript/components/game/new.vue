@@ -15,6 +15,7 @@
 }
 .new-game:focus {
   border: 0px;
+  outline:0;
 }
 .wrapper {
   align-items: center;
@@ -28,7 +29,7 @@
 <template>
   <div class="wrapper">
     <button class="new-game" v-on:click="createGame()">
-      NewGame
+      Начать Игру
     </button>
  </div>
 </template>
