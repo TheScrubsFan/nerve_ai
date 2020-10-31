@@ -4,6 +4,11 @@
 	font-size: 32px;
   padding-top: 20px;
 }
+a {
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
+}
 .field {
 	font-size: 42px;
 }
@@ -69,6 +74,9 @@ table tr th:last-child {
       </div>
       <div v-if="!youWinner()">
         Вы проиграли
+      </div>
+      <div>
+        <a v-on:click="createGame()">Новая игра</a>
       </div>
     </div>
 
@@ -144,7 +152,6 @@ export default {
     },
 
     canStepCell: function (cell) {
-      console.log(!cell.kind)
       return !cell.kind && this.canStep()
     },
 
@@ -165,6 +172,14 @@ export default {
 
     gameOver: function () {
       return this.game.state == 'finished'
+    },
+
+    createGame: function () {
+      axios
+        .post('/games')
+        .then(response => (
+          this.$router.push({name: 'game', params: { id: response.data.game.id }})
+        ))
     }
   },
 }
