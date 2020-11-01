@@ -11,10 +11,11 @@ a {
 }
 .field {
 	font-size: 42px;
+  color: rgba(255, 255, 255, 0.97);
 }
 .cell {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border: 0px;
 	cursor: pointer;
   background-color: transparent;
@@ -23,7 +24,7 @@ a {
   outline:0;
 }
 .tablecell {
-  height: 50px;
+  height: 60px;
 }
 table {
   border-collapse: collapse;
@@ -31,10 +32,10 @@ table {
   margin-top: 20px;
 }
 table td, table th {
-  border: 1px solid white;
+  border: 3px solid rgba(255, 255, 255, 0.5);
   padding: 2px;
-  min-width: 50px;
-  min-height: 50px;
+  min-width: 60px;
+  min-height: 60px;
 }
 table tr:first-child td {
   border-top: 0;
