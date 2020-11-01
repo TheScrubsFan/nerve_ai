@@ -116,7 +116,8 @@ export default {
       },
       rejected() {},
       received(data) {
-        this.game = data.game
+        this.game = data.game,
+        this.blocked = false
       },
       disconnected() {}
     }
@@ -140,7 +141,8 @@ export default {
   data: function () {
     return {
       game: {},
-      user: {}
+      user: {},
+      blocked: false
     }
   },
   methods: {
@@ -148,6 +150,7 @@ export default {
       if(!this.canStepCell(cell))
         return
 
+      this.blocked = true
       let params = {
         cell: cell
       }
@@ -158,7 +161,7 @@ export default {
     },
 
     canStepCell: function (cell) {
-      return !cell.kind && this.canStep()
+      return !this.blocked && !cell.kind && this.canStep()
     },
 
     canStep: function () {
